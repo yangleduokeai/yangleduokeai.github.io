@@ -27,14 +27,20 @@
     </div>
     <script>
         window.$docsify = {
-            coverpage: true,
-            homepage: 'home.md'
+            name: '阳乐多',
+            coverpage: 'md/封面.md',
+            homepage: 'md/主页.md',
+            loadSidebar: 'md/侧栏.md',
+            auto2top: true,
         }
     </script>
     <!-- Docsify v4 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
     <!--鼠标点击显示爱心-->
     <script src="https://cdn.jsdelivr.net/gh/wallleap/cdn/js/love.js"></script>
+    <!--随机牵引线条-->
+    <script type="text/javascript" color="177, 122, 125" opacity="2" zIndex="-1" count="200"
+        src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
     <!-- emoji表情支持 -->
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
     <!-- 图片放大缩小支持 -->
