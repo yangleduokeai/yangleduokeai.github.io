@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>阳乐多的小窝🏠</title>
-    <link rel="shortcut icon" href="media/icon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="media/icon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     <!--页面底部歌词-->
@@ -15,15 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
     <meting-js server="netease" type="playlist" id="7554021679" fixed="true" autoplay="true" order="random" loop="all">
     </meting-js>
-    <style>
-        .aplayer.aplayer-fixed .aplayer-body {
-            left: unset;
-            padding-right: 0;
-        }
-        .aplayer.aplayer-fixed .aplayer-body .aplayer-miniswitcher {
-            display: none
-        }
-    </style>
+
 </head>
 
 <body>
@@ -71,6 +63,10 @@
             document.getElementById('s').innerHTML = s;
         }
         timer();
+        setTimeout(function () {
+            let element = document.getElementsByClassName("aplayer-body")[0]
+            element.style.left = 'unset';
+        }, 2000)
     </script>
 </body>
 
