@@ -7,9 +7,9 @@
     <link rel="shortcut icon" href="media/icon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-    <!--页面底部歌词-->
     <!-- require APlayer -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+    <link rel="stylesheet" href="media/timeline.css">
     <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     <!-- require MetingJS -->
     <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
@@ -20,20 +20,40 @@
 
 <body>
     <nav>
-        <b id="d"></b> Days <b id="h"></b> Hours <b id="m"></b> Minutes <b id="s"></b> Seconds
+        <b id="d"></b> Days <b id="h"></b> Hours <b id="m"></b> Mins <b id="s"></b> Secs
     </nav>
     <div id="app"></div>
     <script>
         window.$docsify = {
             name: '阳乐多',
-            coverpage: 'md/封面.md',
-            homepage: 'md/主页.md',
-            loadSidebar: 'md/侧栏.md',
-            // auto2top: true,
+            logo: '../media/icon.ico',
+            basePath: '/content/',
+            coverpage: '../封面.md',
+            homepage: '../主页.md',
+            loadSidebar: '00目录.md',
+            auto2top: true,
+            subMaxLevel: 2,
+            markdown: {
+                renderer: {
+                    code: function (code, lang) {
+                        if (lang === "timeline") {
+                            let time_divs = eval("(" + code + ")")
+                                .map(function (i, index, arr) {
+                                    return `<div class="timeline-${index%2==0? "left":"right"}"><span></span><ul class="timeul"><li><div class="time-title">${i.title}</div><span></span><div class="time-content">${i.content}</div></li></ul></div>`
+                                })
+                            return `<div class="container"><div class="col-md-offset-2 col-md-8 col-sm-12 col-xs-12"><div class="content-timeline-border">${time_divs.join("")}</div></div></div>`
+                        }
+                        return this.origin.code.apply(this, arguments);
+                    }
+                }
+            }
         }
     </script>
     <!-- Docsify v4 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    <!-- 引入mermaid绘图 -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
+    <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <!--鼠标点击显示爱心-->
     <script src="https://cdn.jsdelivr.net/gh/wallleap/cdn/js/love.js"></script>
     <!--随机牵引线条-->
@@ -43,8 +63,6 @@
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
     <!-- 图片放大缩小支持 -->
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
-    <!--在所有的代码块上添加一个简单的Click to copy按钮来允许用户从你的文档中轻易地复制代码-->
-    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
 
     <script>
         function timer() {
@@ -66,7 +84,7 @@
         setTimeout(function () {
             document.getElementsByClassName("aplayer-body")[0].style.left = 'unset'
             document.getElementsByClassName("aplayer")[0].style.left = 'unset';
-        }, 1500)
+        }, 5200)
     </script>
 </body>
 
