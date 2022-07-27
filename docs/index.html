@@ -15,7 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
     <meting-js server="netease" type="playlist" id="7554021679" fixed="true" autoplay="true" order="random" loop="all">
     </meting-js>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/aes.min.js"></script>
 </head>
 
 <body>
@@ -24,6 +25,23 @@
     </nav>
     <div id="app"></div>
     <script>
+        var key = [0, 0, 0, 0]; var key_string = ''
+        var emj = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
+        function decrypt(word, key) {
+            if (key.length < 16) {
+                let length = 16 - key.length
+                for (let i = 0; i < length; i++) {
+                    key += 'l'
+                }
+            }
+            let keyAes = CryptoJS.enc.Utf8.parse(key);
+            let decrypted = CryptoJS.AES.decrypt(word, keyAes, {
+                iv: CryptoJS.enc.Utf8.parse('0123456789abcdef'),
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            return CryptoJS.enc.Utf8.stringify(decrypted);
+        }
         window.$docsify = {
             name: '阳乐多',
             logo: '../media/icon.ico',
@@ -39,9 +57,17 @@
                         if (lang === "timeline") {
                             let time_divs = eval("(" + code + ")")
                                 .map(function (i, index, arr) {
-                                    return `<div class="timeline-${index%2==0? "left":"right"}"><span></span><ul class="timeul"><li><div class="time-title">${i.title}</div><span></span><div class="time-content">${i.content}</div></li></ul></div>`
+                                    return `<div class="timeline-${index % 2 == 0 ? "left" : "right"}"><span></span><ul class="timeul"><li><div class="time-title">${i.title}</div><span></span><div class="time-content">${i.content}</div></li></ul></div>`
                                 })
                             return `<div class="container"><div class="col-md-offset-2 col-md-8 col-sm-12 col-xs-12"><div class="content-timeline-border">${time_divs.join("")}</div></div></div>`
+                        }
+                        if (lang === 'secret') {
+                            return decrypt(code, key_string) ? decrypt(code, key_string) : `<h3>🔒
+                            <span id='A' onclick="{document.getElementById('A').innerHTML=emj[++key[0]%10]}">${emj[key[0] % 10]}</span>
+                            <span id='B' onclick="{document.getElementById('B').innerHTML=emj[++key[1]%10]}">${emj[key[1] % 10]}</span>
+                            <span id='C' onclick="{document.getElementById('C').innerHTML=emj[++key[2]%10]}">${emj[key[2] % 10]}</span>
+                            <span id='D' onclick="{document.getElementById('D').innerHTML=emj[++key[3]%10]}">${emj[key[3] % 10]}</span>
+                            <a href="#/" onclick="{key_string=key.map(a=>a%10).reduce((a,b)=>''+a+b)}">🆗</a><br/></h3>`
                         }
                         return this.origin.code.apply(this, arguments);
                     }
