@@ -35,12 +35,16 @@
                 }
             }
             let keyAes = CryptoJS.enc.Utf8.parse(key);
-            let decrypted = CryptoJS.AES.decrypt(word, keyAes, {
-                iv: CryptoJS.enc.Utf8.parse('0123456789abcdef'),
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            });
-            return CryptoJS.enc.Utf8.stringify(decrypted);
+            try{
+                let decrypted = CryptoJS.AES.decrypt(word, keyAes, {
+                    iv: CryptoJS.enc.Utf8.parse('0123456789abcdef'),
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                });
+                return CryptoJS.enc.Utf8.stringify(decrypted);
+            }catch(err){
+                return ''
+            }
         }
         window.$docsify = {
             name: '阳乐多',
@@ -52,6 +56,7 @@
             auto2top: true,
             subMaxLevel: 2,
             markdown: {
+                smartypants: true,
                 renderer: {
                     code: function (code, lang) {
                         if (lang === "timeline") {
@@ -62,7 +67,7 @@
                             return `<div class="container"><div class="col-md-offset-2 col-md-8 col-sm-12 col-xs-12"><div class="content-timeline-border">${time_divs.join("")}</div></div></div>`
                         }
                         if (lang === 'secret') {
-                            return decrypt(code, key_string) ? decrypt(code, key_string) : `<h3>🔒
+                            return decrypt(code, key_string) ? marked.parse(decrypt(code, key_string)) : `<h3>🔒
                             <span id='A' onclick="{document.getElementById('A').innerHTML=emj[++key[0]%10]}">${emj[key[0] % 10]}</span>
                             <span id='B' onclick="{document.getElementById('B').innerHTML=emj[++key[1]%10]}">${emj[key[1] % 10]}</span>
                             <span id='C' onclick="{document.getElementById('C').innerHTML=emj[++key[2]%10]}">${emj[key[2] % 10]}</span>
